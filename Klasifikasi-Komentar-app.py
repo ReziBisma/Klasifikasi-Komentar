@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import gdown
 import io
 
 from sklearn.utils import resample
@@ -35,8 +36,10 @@ st.write("Web ini membantu mengklasifikasikan komentar atau teks berdasarkan mod
 @st.cache_data
 
 def load_data():
-    url = "https://drive.google.com/uc?export=download&id=1-BLXCH-ywSkVQo-L5HQfOk63sNbTD-6M"
-    df = pd.read_csv(url)
+    url = "https://drive.google.com/uc?id=1-BLXCH-ywSkVQo-L5HQfOk63sNbTD-6M"
+    output = "data.csv"
+    gdown.download(url, output, quiet=False)
+    df = pd.read_csv(output)
     return df
 
 data = load_data()
