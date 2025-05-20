@@ -98,7 +98,6 @@ if st.button("🔍 Classify"):
 st.markdown("---")
 st.write("🎯 Akurasi Model:", f"{accuracy:.4f}")
 
-# Upload File Batch
 st.markdown("---")
 st.subheader("📂 Upload File Komentar (CSV)")
 uploaded_file = st.file_uploader("Unggah file CSV yang berisi kolom komentar", type=["csv"])
@@ -136,43 +135,3 @@ if uploaded_file:
             )
     except Exception as e:
         st.error(f"Terjadi kesalahan saat membaca file: {e}")
-
-# Upload File Batch
-st.markdown("---")
-st.subheader("📂 Upload File Komentar (CSV)")
-uploaded_file = st.file_uploader("Unggah file CSV yang berisi kolom komentar", type=["csv"])
-
-if uploaded_file:
-    try:
-        df_upload = pd.read_csv(uploaded_file)
-        if 'komentar' not in df_upload.columns:
-            st.error("File harus memiliki kolom bernama 'komentar'")
-        else:
-            df_upload['komentar'] = df_upload['komentar'].fillna('')
-            vec_comments = vectorizer.transform(df_upload['komentar'])
-            df_upload['klasifikasi'] = model.predict(vec_comments)
-
-            # Tampilkan hasil dengan warna
-            def highlight_sentiment(val):
-                color = 'red' if val == 'negative' else 'green' if val == 'positive' else 'blue'
-                return f'background-color: {color}; color: white'
-
-            st.write("### Hasil Klasifikasi:")
-            st.dataframe(df_upload.style.applymap(highlight_sentiment, subset=['klasifikasi']))
-
-            # Tampilkan total klasifikasi
-            st.markdown("### 📊 Total Klasifikasi:")
-            klasifikasi_counts = df_upload['klasifikasi'].value_counts()
-            st.write(klasifikasi_counts.to_frame().rename(columns={"klasifikasi": "Jumlah"}))
-
-            # Unduh hasil
-            csv_out = df_upload.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="📥 Unduh Hasil sebagai CSV",
-                data=csv_out,
-                file_name="hasil_klasifikasi.csv",
-                mime="text/csv"
-            )
-    except Exception as e:
-        st.error(f"Terjadi kesalahan saat membaca file: {e}")
-        
