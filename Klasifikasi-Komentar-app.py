@@ -98,7 +98,6 @@ if st.button("🔍 Classify"):
 st.markdown("---")
 st.write("🎯 Akurasi Model:", f"{accuracy:.4f}")
 
-# Upload File Batch
 st.markdown("---")
 st.subheader("📂 Upload File Komentar (CSV)")
 uploaded_file = st.file_uploader("Unggah file CSV yang berisi kolom komentar", type=["csv"])
